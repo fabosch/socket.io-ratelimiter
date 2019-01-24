@@ -1,0 +1,27 @@
+{
+  "name": "socket.io-ratelimiter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabosch/socket.io-ratelimiter.git"
+  },
+  "keywords": [
+    "socket.io",
+    "ratelimiter",
+    "rate",
+    "limiting",
+    "ratelimiting",
+    "spam"
+  ],
+  "author": "fabosch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fabosch/socket.io-ratelimiter/issues"
+  },
+  "homepage": "https://fabosch.de"
+}
