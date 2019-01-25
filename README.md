@@ -1,13 +1,75 @@
 # Socket.IO-ratelimiter
 
-## IN-OFFICIAL
+## This project is not directly affiliated with "socket.io" (Not official)
 
-## A real Readme will follow. Currently all you can do is look at the example. 
-
-## How to use:
+## How to get started:
+The module.exports (= require('socket.io-ratelimiter')) currently include the SocketIORateLimiter class and the SocketUser class
 ```javascript
+const { SocketIORateLimiter, SocketUser } = require('socket.io-ratelimiter'); // The current components
 
+const rateLimiter = new SocketIORateLimiter(); // ratelimiter instance with no default options
 ```
+SocketIORateLimiter comes with 4 functions you will need.
+1. Since you manage the socket.io events through the ratelimiter instance you will have to pass new connected socket.io socket instances to the initSocket function, it will initialize the default event listeners on it.
+```javascript
+// socket = a socket.io socket instance
+// user = (Optional) An object instance that returns an (unique) id via the getID() function. This will get passed to the SocketEventListenerDataPacket instance, accessable            with the getUser() function. You can use the SocketUser class here.
+rateLimiter.initSocket(socket, user);
+```
+2. You will have to register socket events in the rateLimiter instance.
+This will register an event listener in the 'default' "group", all sockets will get this event when initialized with rateLimiter.initSocket()
+```javascript
+// eventName = The event name, like 'sendData' etc. (the normal socket.io event name)
+// callbackFunction = function(dataPacket, ...theEventArgsYouPassed){}, the function that will get called when the event gets emitted
+//      dataPacket = SocketEventListenerDataPacket instance, has the getSocket(), getUser(), and log() functions. getUser will return the user when the listener got initialized with one
+// options = {   
+    //     justOnce: boolean whether socket.on or socket.once should be used (true will result in only calling the listener the first time the event gets emitted on this   socket),  
+    //     limit: boolean that activates or deactives rate-limiting,
+    //     limitVersion: 'socket' | 'user' | 'ip', "socket" will ratelimit per socket, "user" will ratelimit per (some passed user).getID(), "ip" will ratelimit per IP
+    // 
+    //     timePassedBetween: Min. time in ms (Integer) between event calls. Will block any faster calls,
+    //     maxPerMinute: Max. amount (Integer) of event calls per minute (per "limitVersion", not globally)
+    // }
+rateLimiter.registerListener(eventName, callbackFunction, options);
+```
+3. You can also create "groups" (like namespaces or rooms). You will have to register the group at first before trying to assign listeners to it. The default group is "default".
+```javascript
+// listenerGroupName = The name of the listener group (String)
+rateLimiter.registerListenerGroup(listenerGroupName);
+```
+4. You then can then initialize sockets on the listeners of a listener group
+```javascript
+// listenerGroupName = The name of the listener group (String)
+// socket = The socket.io socket instance
+// user = (Optional) An object instance that returns an (unique) id via the getID() function. This will get passed to the SocketEventListenerDataPacket instance, accessable            with the getUser() function. You can use the SocketUser class here.
+rateLimiter.initGroupSocket(listenerGroupName, socket, user);
+```
+5. And this is how you register listeners to a certain group
+```javascript
+// listenerGroupName = The name of the listener group (String)
+// The rest is the same as for the normal registerListener() function
+rateLimiter.registerGroupListener(listenerGroupName, eventName, callbackFunction, options);
+```
+
+### Additional functions
+- enableLog()
+Enables logging. Is disabled by default.
+- disableLog()
+Disables logging
+- getLogEnabled()
+Returns whether logging is enabled or not (boolen)
+- log(text)
+Calls console.log(text) when logging is enabled. The socket event listeners log via this function, feel free to override this method (by extending the SocketIORateLimiter class)
+
+### SocketEventListenerDataPacket
+Has 3 Functions
+- getSocket()
+Returns the socket.io socket
+- getUser()
+Returns the user instance (if you passed one when initializing), returns an empty object ({}) by default.
+- log(text)
+This is a log function that will add "[(the listener name)] " infront of your message. E.g. for a "sendData" event listener: "\[sendData\] (Text here ...)" 
+You need to enable logging with (rateLimiter instance).enableLog() first. You can also extend the SocketIORateLimiter class and override it's "log()" function, it performs the logging to the console.
 
 ## Complete Example (also found in /example/):
 

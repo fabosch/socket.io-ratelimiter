@@ -34,7 +34,7 @@ function registerNormalListeners()
         limitVersion: 'ip',     // Will limit per IP, other options are: 'socket' (will limit per socket) and 'user' (will limit per "(some passed user).getID()")
 
         timePassedBetween: 750, // Min. amount of time between the same event (in ms)
-        maxPerMinute: 3         // Max. amount of event calls per minute (per "limitVersion")
+        maxPerMinute: 3         // Max. amount of event calls per minute (per "limitVersion", not globally)
     });
 }
 
