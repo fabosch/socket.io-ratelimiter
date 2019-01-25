@@ -74,7 +74,7 @@ You need to enable logging with (rateLimiter instance).enableLog() first. You ca
 
 ## Todo-List
 - Create a good documentation
-- Add an option to react to blocked event calls
+- Add an option to react to blocked events
 - Add more ratelimit options
 - Some more functionality for the listenerGroups
 - ...
