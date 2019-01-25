@@ -3,7 +3,13 @@
 ## IN-OFFICIAL
 
 ## A real Readme will follow. Currently all you can do is look at the example. 
-## Example (also found in /example/):
+
+## How to use:
+```javascript
+
+```
+
+## Complete Example (also found in /example/):
 
 ```javascript
 const { SocketIORateLimiter, SocketUser } = require('socket.io-ratelimiter');
