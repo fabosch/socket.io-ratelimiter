@@ -9,7 +9,7 @@ const { SocketIORateLimiter, SocketUser } = require('socket.io-ratelimiter'); //
 
 const rateLimiter = new SocketIORateLimiter(); // ratelimiter instance with no default options
 ```
-SocketIORateLimiter comes with 4 functions you will need.
+SocketIORateLimiter comes with some functions that will handle registering listeners and initializing them on socket.io sockets
 1. Since you manage the socket.io events through the ratelimiter instance you will have to pass new connected socket.io socket instances to the initSocket function, it will initialize the default event listeners on it.
 ```javascript
 // socket = a socket.io socket instance
@@ -22,7 +22,7 @@ This will register an event listener in the 'default' "group", all sockets will 
 // eventName = The event name, like 'sendData' etc. (the normal socket.io event name)
 // callbackFunction = function(dataPacket, ...theEventArgsYouPassed){}, the function that will get called when the event gets emitted
 //      dataPacket = SocketEventListenerDataPacket instance, has the getSocket(), getUser(), and log() functions. getUser will return the user when the listener got initialized with one
-// options = {   
+// options = (Optional, will fallback to the rateLimiter default options passed in the constructor, the built-in default options disable ratelimiting) {   
     //     justOnce: boolean whether socket.on or socket.once should be used (true will result in only calling the listener the first time the event gets emitted on this   socket),  
     //     limit: boolean that activates or deactives rate-limiting,
     //     limitVersion: 'socket' | 'user' | 'ip', "socket" will ratelimit per socket, "user" will ratelimit per (some passed user).getID(), "ip" will ratelimit per IP
