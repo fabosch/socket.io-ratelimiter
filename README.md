@@ -2,7 +2,7 @@
 
 ## This project is not directly affiliated with "socket.io" (Not official)
 
-## How to get started:
+## How to use:
 The module.exports (= require('socket.io-ratelimiter')) currently include the SocketIORateLimiter class and the SocketUser class
 ```javascript
 const { SocketIORateLimiter, SocketUser } = require('socket.io-ratelimiter'); // The current components
