@@ -25,7 +25,7 @@ class SocketIORateLimiter
     {
         if(pListenerGroup === undefined)
         {
-            throw new Error('[initSocket] No pListenerGroup set. If you want to access the "default" group: Use "initDefaultSocket(pSocket,pUser={})"');
+            throw new Error('[initSocket] No pListenerGroup set. If you want to access the "default" group: Use "initSocket(pSocket,pUser={})"');
         }
 
         if(!this.listener.hasOwnProperty(pListenerGroup))
