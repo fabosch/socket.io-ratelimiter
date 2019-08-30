@@ -178,7 +178,9 @@ function init()
 
     io.on('connection', (pSocket) =>
     {
-        rateLimiter.initSocket(pSocket); // The socket will now get the events previously registered in the SocketIORateLimiter
+        rateLimiter.initSocket(pSocket, {}, true); // The socket will now get the events previously registered in the SocketIORateLimiter
+                                                   // No user passed
+                                                   // true: "initSocket" event gets rate limited
     });
 }
 

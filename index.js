@@ -26,7 +26,7 @@ class SocketIORateLimiter
             maxPerMinute: 45 // Maximum auf 45 "initSocket" events per IP per minute
         };
 
-        this.limitStorage = new LimitStorage(initOptions.timePassedBetween, initOptions.maxPerMinute);
+        this.limitStorage = new LimitStorage(this.initOptions.timePassedBetween, this.initOptions.maxPerMinute);
     }
 
     initGroupSocket(pListenerGroup, pSocket, pUser = {})
