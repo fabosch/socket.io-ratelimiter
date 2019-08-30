@@ -1,10 +1,11 @@
 'use strict';
 
 const SocketEventListener = require('./lib/SocketEventListener');
+const LimitStorage = require('./lib/LimitStorage');
 
 class SocketIORateLimiter
 {
-    constructor(pDefaultOptions)
+    constructor(pDefaultOptions, pInitOptions)
     {
         this.defaultOptions = pDefaultOptions || {
             limit: false,           // false = inactive
@@ -19,6 +20,13 @@ class SocketIORateLimiter
         };
 
         this.allowLog = false;
+
+        this.initOptions = pInitOptions || {
+            timePassedBetween: 100, // Atleast 100ms between the "initSocket" events per IP
+            maxPerMinute: 45 // Maximum auf 45 "initSocket" events per IP per minute
+        };
+
+        this.limitStorage = new LimitStorage(initOptions.timePassedBetween, initOptions.maxPerMinute);
     }
 
     initGroupSocket(pListenerGroup, pSocket, pUser = {})
@@ -39,8 +47,17 @@ class SocketIORateLimiter
         }
     }
 
-    initSocket(pSocket, pUser = {})
+    initSocket(pSocket, pUser = {}, pLimit = false)
     {
+        if(pLimit === true)
+        {
+            const callerID = 'ip_' + pSocket.request.socket.remoteAddress;
+            if(!this.limitStorage.verifyAndAdd(callerID))
+            {
+                return;
+            }
+        }
+
         this.initGroupSocket('default', pSocket, pUser);
     }
 
@@ -98,6 +115,7 @@ class SocketIORateLimiter
 
 module.exports = {
     SocketIORateLimiter: SocketIORateLimiter,
-    SocketUser: require('./lib/SocketUser') 
+    SocketUser: require('./lib/SocketUser'),
+    LimitStorage: require('./lib/LimitStorage')
     /* There will be changes to this, you will (maybe) be able to swap out single components */
 };

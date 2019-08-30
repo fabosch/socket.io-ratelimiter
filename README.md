@@ -8,14 +8,30 @@ The module.exports (= require('socket.io-ratelimiter')) currently includes the S
 ```javascript
 const { SocketIORateLimiter, SocketUser } = require('socket.io-ratelimiter'); // The current components
 
-const rateLimiter = new SocketIORateLimiter(); // ratelimiter instance with no default options
+// defaultOptions = (Optional) See below
+// initOptions = (Optional) See below
+const rateLimiter = new SocketIORateLimiter(defaultOptions, initOptions);
+//"default" defaultOptions:
+{
+    limit: false,           // false = inactive
+    limitVersion: 'socket', // "socket" is the default "limitVersion" (It means you limit per socket connection), you can also limit per "user" (check the part about "User" for this) and "ip"
+
+    timePassedBetween: 0,   // Min. amount of time between the same event (in ms)
+    maxPerMinute: 0         // Max. amount of event calls per minute (per "limitVersion")
+};
+//default initOptions:
+{
+    timePassedBetween: 100, // Atleast 100ms between the "initSocket" events per IP
+    maxPerMinute: 45 // Maximum auf 45 "initSocket" events per IP per minute
+};
 ```
 SocketIORateLimiter comes with some functions that will handle registering listeners and initializing them on socket.io sockets
 1. Since you manage the socket.io events through the ratelimiter instance you will have to pass new connected socket.io socket instances to the initSocket function, it will initialize the default event listeners on it.
 ```javascript
 // socket = a socket.io socket instance
 // user = (Optional) An object instance that returns an (unique) id via the getID() function. This will get passed to the SocketEventListenerDataPacket instance, accessable with the getUser() function. You can use the SocketUser class here.
-rateLimiter.initSocket(socket, user);
+// limit = (Optional) A boolean (default: false), whether the "initSocket" event should get ratelimited (per IP). See RateLimiter constructor for the configuration.
+rateLimiter.initSocket(socket, user, limit);
 ```
 2. You will have to register socket events in the rateLimiter instance.
 This will register an event listener in the 'default' "group", all sockets will get this event when initialized with rateLimiter.initSocket()
