@@ -111,6 +111,16 @@ class SocketIORateLimiter
     {
         if(this.allowLog) console.log(pText);
     }
+
+    /**
+     * Override this method to send a response when a socket reaches it's limit
+     * @param {*} pSocket 
+     * @param {*} pListenerName 
+     */
+    socketLimitReached(pSocket, pListenerName)
+    {
+
+    }
 }
 
 module.exports = {

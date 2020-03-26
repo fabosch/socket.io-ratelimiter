@@ -1,7 +1,22 @@
 const { SocketIORateLimiter, SocketUser } = require('../index'); // require('socket.io-ratelimiter') for you
 const socketIO = require('socket.io');
 
-const rateLimiter = new SocketIORateLimiter;
+class CustomRateLimiter extends SocketIORateLimiter
+{
+    /**
+     * Override this method to send a response when a socket reaches it's limit
+     * @param {*} pSocket 
+     * @param {*} pListenerName 
+     */
+    socketLimitReached(pSocket, pListenerName)
+    {
+        console.log('A socket reached it\'s limit with listener: ' + pListenerName);
+
+        pSocket.emit('limit_reached', null);
+    }
+}
+
+const rateLimiter = new CustomRateLimiter;
 const io = socketIO.listen(8080);
 
 function registerNormalListeners()

@@ -5,6 +5,11 @@
     */
     const socket = io('http://127.0.0.1:8080');
 
+    socket.on('limit_reached', () =>
+    {
+        console.log('I reached my limit!');
+    });
+
     socket.on('youAreNowLoggedIn', (pMyID) =>
     {
         console.log('>> youAreNowLoggedIn', pMyID);
