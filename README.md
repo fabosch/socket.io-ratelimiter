@@ -1,6 +1,7 @@
 # Socket.IO-ratelimiter
 
-## This project is not affiliated with "socket.io" (Not official)
+NPM module that can be used to rate limit socket.io events.
+
 ## Work In Progress, you shouldn't confidently use this in production. (It does work though)
 
 ## How to use:
@@ -90,7 +91,6 @@ You need to enable logging with (rateLimiter instance).enableLog() first. You ca
 
 ## Todo-List
 - Create a good documentation
-- Add an option to react to blocked events
 - Add more ratelimit options
 - Some more functionality for the listenerGroups
 - ...
