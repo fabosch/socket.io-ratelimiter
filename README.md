@@ -2,4 +2,4 @@
 
 NPM module that can be used to rate limit socket.io events. Should not be seen as stable.
 
-[Wiki](https://github.com/fabosch/socket.io-ratelimiter/wiki)
+For documentation please take a look at [Wiki](https://github.com/fabosch/socket.io-ratelimiter/wiki)
