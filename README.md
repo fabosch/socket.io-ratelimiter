@@ -2,4 +2,4 @@
 
 NPM module that can be used to rate limit socket.io events.
 
-[Wiki](/wiki)
+[Wiki](/fabosch/socket.io-ratelimiter/wiki)
